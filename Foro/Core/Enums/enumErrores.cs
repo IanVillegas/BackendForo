@@ -8,6 +8,8 @@ namespace Core.Enums
 {
     public enum enumErrores
     {
+        errorNoControlado = -2,
+        errorDeBaseDeDatos = -1, //No se hace
         nombreFaltante = 1,
         apellidosFaltantes = 2,
         correoFaltante = 3,

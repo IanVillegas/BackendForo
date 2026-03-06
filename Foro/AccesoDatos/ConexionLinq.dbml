@@ -12,4 +12,26 @@
     <Parameter Name="ERRORDESCRIPCION" Parameter="eRRORDESCRIPCION" Type="System.String" DbType="NVarChar(MAX)" Direction="InOut" />
     <Return Type="System.Int32" />
   </Function>
+  <Function Name="dbo.SP_OBTENER_PUBLICACIONES" Method="SP_OBTENER_PUBLICACIONES">
+    <ElementType Name="SP_OBTENER_PUBLICACIONESResult">
+      <Column Name="GUID_PUBLICACION" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="GUID_TEMA" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+      <Column Name="GUID_USUARIO" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="TITULO" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="MENSAJE" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="FECHA_REGISTRO" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="NOMBRE" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="APELLIDOS" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.SP_INSERTAR_BITACORA" Method="SP_INSERTAR_BITACORA">
+    <Parameter Name="CLASE" Parameter="cLASE" Type="System.String" DbType="NVarChar(MAX)" />
+    <Parameter Name="METODO" Parameter="mETODO" Type="System.String" DbType="NVarChar(MAX)" />
+    <Parameter Name="TIPO" Parameter="tIPO" Type="System.Int16" DbType="SmallInt" />
+    <Parameter Name="ERROR_ID" Parameter="eRROR_ID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="DESCRIPCION" Parameter="dESCRIPCION" Type="System.String" DbType="NVarChar(MAX)" />
+    <Parameter Name="REQUEST" Parameter="rEQUEST" Type="System.String" DbType="NVarChar(MAX)" />
+    <Parameter Name="RESPONSE" Parameter="rESPONSE" Type="System.String" DbType="NVarChar(MAX)" />
+    <Return Type="System.Int32" />
+  </Function>
 </Database>

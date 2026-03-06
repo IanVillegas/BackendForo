@@ -42,12 +42,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entidades\Error.cs" />
+    <Compile Include="Entidades\Publicacion.cs" />
     <Compile Include="Entidades\Usuario.cs" />
     <Compile Include="Enums\enumErrores.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Request\ReqIngresarUsuario.cs" />
+    <Compile Include="Request\ReqObtenerPublicaciones.cs" />
     <Compile Include="Response\ResBase.cs" />
     <Compile Include="Response\ResIngresarUsuario.cs" />
+    <Compile Include="Response\ResObtenerPublicaciones.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
