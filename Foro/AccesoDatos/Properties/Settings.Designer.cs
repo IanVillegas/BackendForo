@@ -22,16 +22,5 @@ namespace AccesoDatos.Properties {
                 return defaultInstance;
             }
         }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=JOHANASUS\\SQLEXPRESS01;Initial Catalog=bdForo;User ID=sa;Password=xh2" +
-            "013;TrustServerCertificate=True")]
-        public string bdForoConnectionString {
-            get {
-                return ((string)(this["bdForoConnectionString"]));
-            }
-        }
     }
 }

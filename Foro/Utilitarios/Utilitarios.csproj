@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{13DE619F-3929-491E-A43C-8416E0575588}</ProjectGuid>
+    <ProjectGuid>{423C5A7D-62AC-410B-A4A6-28C2469473EC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Utilitarios</RootNamespace>
@@ -42,16 +42,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilitarios.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AccesoDatos\AccesoDatos.csproj">
-      <Project>{079c6a5e-4ca0-4466-9692-f3c3d815f57b}</Project>
+      <Project>{fb4035ce-c556-4990-88ce-716d62fe640c}</Project>
       <Name>AccesoDatos</Name>
     </ProjectReference>
     <ProjectReference Include="..\Core\Core.csproj">
-      <Project>{62a2b809-e205-4daf-a47a-b55e646f03a8}</Project>
+      <Project>{78b29615-3983-4e46-a565-11ac2aae8038}</Project>
       <Name>Core</Name>
     </ProjectReference>
   </ItemGroup>

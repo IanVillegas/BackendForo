@@ -1,80 +1,100 @@
 ﻿using AccesoDatos;
 using Core.Entidades;
-using Core.Enums;
+using Core.Enum;
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
-using System.Text;
-using System.Threading.Tasks;
+using System.Reflection.Emit;
+using System.Runtime.CompilerServices;
+using System.Web;
+
 
 namespace Utilitarios
 {
     public static class Utilitarios
     {
-        public static Error crearError(enumErrores enumErrores)
+        public static Error crearError(enumErrores enumError)
         {
             Error error = new Error();
-            error.codigo = enumErrores;
-            error.mensaje = enumErrores.ToString();
+            error.codigo = enumError;
+            error.mensaje = enumError.ToString();
 
             return error;
+
         }
 
-        public static void crearBitacora(string clase, string metodo, short tipo, int error, string descripcion, string request, string response)
+
+        public static void bitacorear (ReqBitacorear req)
         {
-            try
+            //Validar campos
+           try
             {
-                using (ConexionLinqDataContext linq = new ConexionLinqDataContext())
+                using (ConexionDataContext linq = new ConexionDataContext())
                 {
-                    linq.SP_INSERTAR_BITACORA(clase,metodo,tipo,error,descripcion,request,response);
+                    linq.SP_INSERTAR_BITACORA(req.Bitacora.clase, req.Bitacora.metodo, (short)req.Bitacora.tipo, req.Bitacora.errorId, req.Bitacora.descripcion, req.Bitacora.request, req.Bitacora.response);
                 }
             }
-            catch (Exception ex)
+            catch(Exception e)
             {
-                //Bitacorear en .txt
+                //Bitacorear en un .txt
+                //Enviar mail a los devs etc etc
             }
         }
 
-        public static bool EnviarCorreoVerificacion(string nombre, string correo, string codigoVerificacion)
+        public static string crearToken()
         {
+            const string caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            var random = new Random();
+            return new string(Enumerable.Range(0, 6)
+                .Select(_ => caracteres[random.Next(caracteres.Length)])
+                .ToArray());
+        }
+
+        public static bool EnviarCorreoVerificacion(string nombre, string apellido, string correo, string token)
+        {
+            #region contraseñasSecretas
+            string correoEnvio = "SuCuenta";
+            string passAplicacion = "SuPasswordUltraSecreto";
+            #endregion
             try
             {
-                string asunto = "Confirma tu cuenta";
-                string cuerpo = $@"
-    <html>
-    <body style='font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 30px;'>
-        <div style='max-width: 500px; margin: auto; background-color: #ffffff; border-radius: 10px; padding: 30px; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1);'>
-            <h2 style='color: #2c3e50;'>¡Bienvenido, {nombre}!</h2>
-            <p style='color: #555; font-size: 15px;'>Gracias por registrarte. Usa el siguiente código para verificar tu cuenta:</p>
-            <div style='margin: 25px 0; padding: 15px; background-color: #3498db; border-radius: 8px;'>
-                <span style='font-size: 28px; font-weight: bold; color: #ffffff; letter-spacing: 6px;'>{codigoVerificacion}</span>
-            </div>
-            <p style='color: #999; font-size: 13px;'>Si no creaste esta cuenta, ignora este mensaje.</p>
-            <hr style='border: none; border-top: 1px solid #eee; margin: 20px 0;'/>
-            <p style='color: #bbb; font-size: 11px;'>© 2025 MiApp. Todos los derechos reservados.</p>
-        </div>
-    </body>
-    </html>";
-
                 var mensaje = new MailMessage
                 {
-                    From = new MailAddress("tucorreo@gmail.com", "MiApp"),
-                    Subject = asunto,
-                    Body = cuerpo,
-                    IsBodyHtml = true
+                    From = new MailAddress("SuCuenta@suApp.com", "Foro UNA"),
+                    Subject = "Verifica tu cuenta",
+                    IsBodyHtml = true,
+                    Body = $@"
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='UTF-8'>
+</head>
+<body style='font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;'>
+    <div style='max-width: 500px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);'>
+        <h2 style='color: #333; text-align: center;'>¡Bienvenido/a!</h2>
+        <p style='color: #555; font-size: 16px;'>Hola <strong>{nombre} {apellido}</strong>,</p>
+        <p style='color: #555; font-size: 16px;'>Gracias por registrarte. Para activar tu cuenta, usa el siguiente código de verificación:</p>
+        <div style='background: #007bff; color: white; padding: 15px; text-align: center; font-size: 24px; letter-spacing: 5px; border-radius: 5px; margin: 20px 0;'>
+            {token}
+        </div>
+        <p style='color: #888; font-size: 14px; text-align: center;'>Este código expira en 24 horas.</p>
+        <hr style='border: none; border-top: 1px solid #eee; margin: 20px 0;'>
+        <p style='color: #aaa; font-size: 12px; text-align: center;'>Si no solicitaste esta verificación, ignora este correo.</p>
+    </div>
+</body>
+</html>"
                 };
+
                 mensaje.To.Add(correo);
 
-                var smtp = new SmtpClient("smtp.gmail.com", 587)
+                using (var smtp = new SmtpClient("smtp.gmail.com", 587))
                 {
-                    Credentials = new NetworkCredential("tucorreo@gmail.com", "2132 43434 4343 4343"),
-                    EnableSsl = true
-                };
+                    smtp.Credentials = new NetworkCredential(correoEnvio, passAplicacion);
+                    smtp.EnableSsl = true;
+                    smtp.Send(mensaje);
+                }
 
-                smtp.Send(mensaje);
                 return true;
             }
             catch
@@ -82,7 +102,5 @@ namespace Utilitarios
                 return false;
             }
         }
-
-
     }
 }
